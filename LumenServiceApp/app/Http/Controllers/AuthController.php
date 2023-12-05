@@ -18,7 +18,8 @@ class AuthController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email|unique:users|string',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed|string'
+             'role' => 'required|in:reader,editor,admin'
         ]);
 
         $input = $request->all();
@@ -29,8 +30,12 @@ class AuthController extends Controller
             'password' => 'required|confirmed'
         ];
 
-        $validator = Validator::make($input, $validationRules);
-
+       $validator = Validator::make($input, [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users|string',
+            'password' => 'required|confirmed|string',
+            'role' => 'required|in:reader,editor,admin'
+           ]);                       
         if($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
